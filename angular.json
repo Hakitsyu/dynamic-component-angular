@@ -1,0 +1,142 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "dynamic-component": {
+      "projectType": "library",
+      "root": "projects/dynamic-component",
+      "sourceRoot": "projects/dynamic-component/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/dynamic-component/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/dynamic-component/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/dynamic-component/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/dynamic-component/src/test.ts",
+            "tsConfig": "projects/dynamic-component/tsconfig.spec.json",
+            "karmaConfig": "projects/dynamic-component/karma.conf.js"
+          }
+        }
+      }
+    },
+    "dynamic-component-showcase": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        },
+        "@schematics/angular:application": {
+          "strict": true
+        }
+      },
+      "root": "projects/dynamic-component-showcase",
+      "sourceRoot": "projects/dynamic-component-showcase/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/dynamic-component-showcase",
+            "index": "projects/dynamic-component-showcase/src/index.html",
+            "main": "projects/dynamic-component-showcase/src/main.ts",
+            "polyfills": "projects/dynamic-component-showcase/src/polyfills.ts",
+            "tsConfig": "projects/dynamic-component-showcase/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/dynamic-component-showcase/src/favicon.ico",
+              "projects/dynamic-component-showcase/src/assets"
+            ],
+            "styles": [
+              "projects/dynamic-component-showcase/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/dynamic-component-showcase/src/environments/environment.ts",
+                  "with": "projects/dynamic-component-showcase/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "dynamic-component-showcase:build:production"
+            },
+            "development": {
+              "browserTarget": "dynamic-component-showcase:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "dynamic-component-showcase:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/dynamic-component-showcase/src/test.ts",
+            "polyfills": "projects/dynamic-component-showcase/src/polyfills.ts",
+            "tsConfig": "projects/dynamic-component-showcase/tsconfig.spec.json",
+            "karmaConfig": "projects/dynamic-component-showcase/karma.conf.js",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/dynamic-component-showcase/src/favicon.ico",
+              "projects/dynamic-component-showcase/src/assets"
+            ],
+            "styles": [
+              "projects/dynamic-component-showcase/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "dynamic-component"
+}
