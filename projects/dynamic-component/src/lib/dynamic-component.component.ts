@@ -1,15 +1,14 @@
-import { ChangeDetectorRef, Component, ComponentRef, EventEmitter, HostBinding, Injector, NgModuleRef, OnInit, Type, ViewChild, ViewContainerRef } from '@angular/core';
+import { ChangeDetectorRef, Component, ComponentRef, EventEmitter, HostBinding, Injector, Input, NgModuleRef, OnInit, Type, ViewChild, ViewContainerRef } from '@angular/core';
 
 @Component({
   selector: 'dynamic-component',
   templateUrl: 'dynamic-component.component.html',
 })
-export class DynamicComponent implements OnInit {
+export class DynamicComponent<T> {
+  @Input() data?: T;
   @ViewChild('root', { read: ViewContainerRef, static: true }) viewContainerRef?: ViewContainerRef;
 
   constructor(private changeDetectorRef: ChangeDetectorRef) { }
-
-  ngOnInit(): void {}
 
   load<T>(component: Type<T>, options?: {
     index?: number;
